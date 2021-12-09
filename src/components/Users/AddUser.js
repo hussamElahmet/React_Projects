@@ -5,12 +5,19 @@ import classes from './AddUser.module.css';
 const AddUser = (props) => {
     const [enteredUsername, setEnteredUsername] = useState('');
     const [enteredAge, setEnteredAge] = useState('');
-
- 
     const addUserHandler = (event) => {
         event.preventDefault();
+        if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
+            return;
+        }
+        if (enteredAge < 1) {
+            return;
+        }
+        props.onAddUser(enteredUsername, enteredAge);
+        setEnteredUsername('');
+        setEnteredAge('');
         console.log(enteredUsername, enteredAge);
-      };
+    };
     const usernameChangeHandler = (event) => {
         setEnteredUsername(event.target.value);
     };
@@ -26,10 +33,12 @@ const AddUser = (props) => {
                 <input
                     type="text"
                     id="username"
+                    value={enteredUsername}
                     onChange={usernameChangeHandler}
                 />
                 <label htmlFor="age">Age</label>
                 <input type="text" id="age"
+                    value={enteredAge}
                     onChange={ageChangeHandler}
                 />
                 <ButtonModule
